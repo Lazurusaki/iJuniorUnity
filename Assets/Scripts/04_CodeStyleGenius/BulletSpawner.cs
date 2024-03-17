@@ -29,5 +29,4 @@ public class BulletSpawner : MonoBehaviour
             yield return wait;
         }
     }
-
 }
