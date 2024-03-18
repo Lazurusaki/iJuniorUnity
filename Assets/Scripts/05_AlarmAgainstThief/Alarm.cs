@@ -1,10 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
+
 [RequireComponent(typeof(AudioSource))]
 
 public class Alarm : MonoBehaviour
 {
+    [SerializeField] private SecureZone _secureZone; 
     [SerializeField] private float _minVolume;
     [SerializeField] private float _maxVolume = 1.0f;
     [SerializeField] private float _fadeDuration = 2.0f;
@@ -17,21 +19,36 @@ public class Alarm : MonoBehaviour
         _alarm.volume = _minVolume;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnEnable()
     {
-        if (other.GetComponent<Thief>() != null) 
-        {      
+        if (_secureZone)
+        {
+            _secureZone.ThiefDetected += Activate;
+            _secureZone.ThiefLost += Deactivate;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_secureZone)
+        {
+            _secureZone.ThiefDetected -= Activate;
+            _secureZone.ThiefLost -= Deactivate;
+        }
+    }
+
+    private void Activate()
+    {
+        if (!_alarm.isPlaying)
+        {
             _alarm.Play();
             StartCoroutine(FadeVolume(_maxVolume));
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void Deactivate()
     {
-        if (other.GetComponent<Thief>() != null)
-        {
-            StartCoroutine(FadeVolume(_minVolume));
-        }
+        StartCoroutine(FadeVolume(_minVolume));
     }
 
     private IEnumerator FadeVolume(float targetVolume)
@@ -42,7 +59,7 @@ public class Alarm : MonoBehaviour
             yield return null;
         }
 
-        if (_alarm.volume == _minVolume) 
+        if (_alarm.volume == _minVolume)
         {
             _alarm.Stop();
         }
