@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class SecureZone : MonoBehaviour
 {
-    public Action ThiefDetected;
-    public Action ThiefLost;
+    public event Action ThiefDetected;
+    public event Action ThiefLost;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Thief>())
+        if (other.TryGetComponent<Thief>(out _))
         {
             ThiefDetected?.Invoke();
         }
@@ -16,7 +16,7 @@ public class SecureZone : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<Thief>())
+        if (other.TryGetComponent<Thief>(out _))
         {
             ThiefLost?.Invoke();
         }

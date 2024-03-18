@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent (typeof(Rigidbody))]
@@ -8,46 +9,48 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _speed = 10.0f;
     [SerializeField] private float _jumpForce = 2.0f;
 
-    private float _groundCheckDistance = 0.1f;
-    private float _characterHeight;
+    [SerializeField] private bool _isGrounded;
+    private float _groundCheckDistance = 0.2f;
     private Rigidbody _rigidBody;
+    private float _horizontalInput;
 
+    public bool IsGrounded => _isGrounded;
+    public float HorizontalInput => _horizontalInput;
+    
     private void Update()
-    {
+    {     
         HandleMovement();
+        HandleGrounded();
         HandleJump();
     }
 
     private void Awake()
     {
-        float halfHeightMultiplier = 0.5f;
-        _characterHeight = GetComponent<CapsuleCollider>().height * halfHeightMultiplier;
         _rigidBody = GetComponent<Rigidbody>();
     }
 
     private void HandleMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-
-        if (horizontalInput != 0.0f)
-        {
-            Vector3 movement = new Vector3(0f, 0f, horizontalInput) * _speed * Time.deltaTime;
-            transform.Translate(movement);
+        _horizontalInput = Input.GetAxis("Horizontal");
+        
+        if (_horizontalInput !=0)
+        {     
+            Vector3 movement = new Vector3(0f, 0f, _horizontalInput) * _speed * Time.deltaTime;
+            transform.LookAt(transform.position + movement);
+            transform.Translate(movement, Space.World);     
         }
     }
 
     private void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
-            _rigidBody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            _rigidBody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse );
         }
     }
 
-    private bool IsGrounded()
+    private void HandleGrounded()
     {
-        return Physics.Raycast(transform.position, Vector3.down,  _characterHeight + _groundCheckDistance);
+        _isGrounded = Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance);
     }
-
-    
 }

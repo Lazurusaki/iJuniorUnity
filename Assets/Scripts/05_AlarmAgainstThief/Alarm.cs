@@ -12,6 +12,7 @@ public class Alarm : MonoBehaviour
     [SerializeField] private float _fadeDuration = 2.0f;
     
     private AudioSource _alarm;
+    private Coroutine _coroutine;
 
     private void Awake()
     {
@@ -42,7 +43,13 @@ public class Alarm : MonoBehaviour
         if (!_alarm.isPlaying)
         {
             _alarm.Play();
-            StartCoroutine(FadeVolume(_maxVolume));
+
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
+
+            _coroutine = StartCoroutine(FadeVolume(_maxVolume));
         }
     }
 
@@ -64,4 +71,5 @@ public class Alarm : MonoBehaviour
             _alarm.Stop();
         }
     }
+
 }
