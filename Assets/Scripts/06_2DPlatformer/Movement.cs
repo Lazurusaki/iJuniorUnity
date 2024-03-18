@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _speed = 10.0f;
     [SerializeField] private float _jumpForce = 2.0f;
 
-    [SerializeField] private bool _isGrounded;
+    private bool _isGrounded;
     private float _groundCheckDistance = 0.2f;
     private Rigidbody _rigidBody;
     private float _horizontalInput;

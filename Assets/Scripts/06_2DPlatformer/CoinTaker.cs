@@ -5,7 +5,7 @@ public class CoinTaker : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Coin>())
+        if (other.TryGetComponent<Coin>(out _))
         {
             Debug.Log("Coin Taken!");
         }

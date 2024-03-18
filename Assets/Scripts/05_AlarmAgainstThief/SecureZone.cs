@@ -3,14 +3,16 @@ using UnityEngine;
 
 public class SecureZone : MonoBehaviour
 {
-    public event Action ThiefDetected;
-    public event Action ThiefLost;
+    [SerializeField] private Alarm _alarm;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Thief>(out _))
         {
-            ThiefDetected?.Invoke();
+            if (_alarm)
+            {
+                _alarm.Activate();
+            }
         }
     }
 
@@ -18,7 +20,10 @@ public class SecureZone : MonoBehaviour
     {
         if (other.TryGetComponent<Thief>(out _))
         {
-            ThiefLost?.Invoke();
+            if (_alarm)
+            {
+                _alarm.Deactivate();
+            }
         }
     }
 }

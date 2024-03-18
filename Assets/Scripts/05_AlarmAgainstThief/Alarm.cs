@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-
 [RequireComponent(typeof(AudioSource))]
 
 public class Alarm : MonoBehaviour
@@ -11,64 +10,47 @@ public class Alarm : MonoBehaviour
     [SerializeField] private float _maxVolume = 1.0f;
     [SerializeField] private float _fadeDuration = 2.0f;
     
-    private AudioSource _alarm;
+    private AudioSource _alarmSound;
     private Coroutine _coroutine;
 
     private void Awake()
     {
-        _alarm = GetComponent<AudioSource>();
-        _alarm.volume = _minVolume;
+        _alarmSound = GetComponent<AudioSource>();
+        _alarmSound.volume = _minVolume;
     }
 
-    private void OnEnable()
+    public void Activate()
     {
-        if (_secureZone)
+        if (!_alarmSound.isPlaying)
         {
-            _secureZone.ThiefDetected += Activate;
-            _secureZone.ThiefLost += Deactivate;
+            _alarmSound.Play();
         }
+
+        if (_coroutine != null)
+        {
+             StopCoroutine(_coroutine);
+        }
+
+        _coroutine = StartCoroutine(FadeVolume(_maxVolume));
+        
     }
 
-    private void OnDisable()
-    {
-        if (_secureZone)
-        {
-            _secureZone.ThiefDetected -= Activate;
-            _secureZone.ThiefLost -= Deactivate;
-        }
-    }
-
-    private void Activate()
-    {
-        if (!_alarm.isPlaying)
-        {
-            _alarm.Play();
-
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-            }
-
-            _coroutine = StartCoroutine(FadeVolume(_maxVolume));
-        }
-    }
-
-    private void Deactivate()
+    public void Deactivate()
     {
         StartCoroutine(FadeVolume(_minVolume));
     }
 
     private IEnumerator FadeVolume(float targetVolume)
     {
-        while (_alarm.volume != targetVolume)
+        while (_alarmSound.volume != targetVolume)
         {
-            _alarm.volume = Mathf.MoveTowards(_alarm.volume, targetVolume, _maxVolume / _fadeDuration * Time.deltaTime);
+            _alarmSound.volume = Mathf.MoveTowards(_alarmSound.volume, targetVolume, _maxVolume / _fadeDuration * Time.deltaTime);
             yield return null;
         }
 
-        if (_alarm.volume == _minVolume)
+        if (_alarmSound.volume == _minVolume)
         {
-            _alarm.Stop();
+            _alarmSound.Stop();
         }
     }
 
