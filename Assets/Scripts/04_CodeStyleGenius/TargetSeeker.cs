@@ -25,15 +25,9 @@ public class TargetSeeker : MonoBehaviour
         }
     }
 
-    public void DefineNewTarget()
+    private void DefineNewTarget()
     {
-        _currentTargetIndex++;
-
-        if (_currentTargetIndex == _targets.Length)
-        {
-            _currentTargetIndex = 0;
-        }
-
+        _currentTargetIndex = ++_currentTargetIndex % _targets.Length;
         _currentTarget = _targets[_currentTargetIndex].transform;
         transform.forward = _currentTarget.position - transform.position;
     }
