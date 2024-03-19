@@ -27,15 +27,11 @@ public class CoinFabric : MonoBehaviour
 
     private void SpawnCoins()
     {
-
         if (transform.childCount > 0)
         {
-            Vector3 position;
-
             for (int i = 0; i < transform.childCount; i++)
             {
-                position = transform.GetChild(i).position;
-                Instantiate(_coinPrefab, position, Quaternion.identity);
+                Instantiate(_coinPrefab, transform.GetChild(i).position, Quaternion.identity);
             }   
         }       
     }   
