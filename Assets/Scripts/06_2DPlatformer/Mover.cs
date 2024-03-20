@@ -23,16 +23,16 @@ public class Mover : MonoBehaviour
         _inputDetector = GetComponent<InputDetector>();
     }
 
-    private void Update()
-    {     
-        HandleMovement();
-        CheckWantToJump();  
-    }
-
     private void FixedUpdate()
     {
         HandleGrounded();
         HandleJump();
+    }
+
+    private void Update()
+    {     
+        HandleMovement();
+        CheckWantToJump();  
     }
 
     private void HandleMovement()

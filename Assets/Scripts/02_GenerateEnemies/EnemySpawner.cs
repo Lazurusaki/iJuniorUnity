@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private Transform[] _spawnPoints;
-    [SerializeField] Enemy _enemyPrefab;
+    [SerializeField] EnemyOld _enemyPrefab;
     [SerializeField] private float _spawnInterval;
 
     private float _rotationMin = 0f;
