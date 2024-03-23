@@ -3,20 +3,18 @@ using UnityEngine;
 
 [RequireComponent(typeof(TMP_Text))]
 
-public class HealthTextViewer : MonoBehaviour
+public class HealthTextViewer : HealthViewer
 {
-    [SerializeField] private Health _health;
-
     private TMP_Text _text;
 
     private void OnEnable()
     {
-        _health.HealthChanged += UpdateText;
+        _health.HealthChanged += UpdateHealth;
     }
 
     private void OnDisable()
     {
-        _health.HealthChanged -= UpdateText;
+        _health.HealthChanged -= UpdateHealth;
     }
 
     private void Awake()
@@ -24,7 +22,7 @@ public class HealthTextViewer : MonoBehaviour
         _text = GetComponent<TMP_Text>();
     }
 
-    private void UpdateText()
+    protected override void UpdateHealth()
     {
         if (_health)
         {

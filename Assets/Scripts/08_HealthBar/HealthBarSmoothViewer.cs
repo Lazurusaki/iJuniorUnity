@@ -4,30 +4,19 @@ using UnityEngine.UI;
 
 [RequireComponent (typeof(Slider))]
 
-public class HealthBarSmoothViewer : MonoBehaviour
-{
-    [SerializeField] private Health _health;
+public class HealthBarSmoothViewer : HealthViewer
+{ 
     [SerializeField] private float _smoothRate;
 
     private Slider _healthSlider;
     private  Coroutine _smoothCoroutine;
-
-    private void OnEnable()
-    {
-        _health.HealthChanged += UpdateBar;
-    }
-
-    private void OnDisable()
-    {
-        _health.HealthChanged -= UpdateBar;
-    }
 
     private void Awake()
     {
         _healthSlider = GetComponent<Slider>();
     }
 
-    private void UpdateBar()
+    protected override void UpdateHealth()
     {
         if (_health)
         {

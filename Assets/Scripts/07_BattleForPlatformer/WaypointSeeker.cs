@@ -26,14 +26,14 @@ public class WaypointSeeker : MonoBehaviour
 
     private void OnEnable()
     {
-        _playerDetector.OnPlayerDetected += SeekPlayer;
-        _playerDetector.OnPlayerLost += ReturnToLastWaypoint;
+        _playerDetector.PlayerDetected += SeekPlayer;
+        _playerDetector.PlayerLost += ReturnToLastWaypoint;
     }
 
     private void OnDisable()
     {
-        _playerDetector.OnPlayerDetected -= SeekPlayer;
-        _playerDetector.OnPlayerLost -= ReturnToLastWaypoint;
+        _playerDetector.PlayerDetected -= SeekPlayer;
+        _playerDetector.PlayerLost -= ReturnToLastWaypoint;
     }
 
     private void Start()

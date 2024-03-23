@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PlayerDetector : MonoBehaviour
 {
-    public event Action<Player> OnPlayerDetected;
-    public event Action OnPlayerLost;
+    public event Action<Player> PlayerDetected;
+    public event Action PlayerLost;
 
     [SerializeField] private float _distance = 5f;
     [SerializeField] private float _detectionHeight = 1f;
@@ -21,12 +21,12 @@ public class PlayerDetector : MonoBehaviour
             if (hit.transform.TryGetComponent<Player>(out _target))
             {
                 _playerDetected = true;
-                OnPlayerDetected?.Invoke(_target);
+                PlayerDetected?.Invoke(_target);
             }
         }
         else if (_playerDetected)
         {
-            OnPlayerLost?.Invoke();
+            PlayerLost?.Invoke();
             _playerDetected = false;
         } 
     }

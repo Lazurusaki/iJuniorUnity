@@ -33,7 +33,7 @@ public class Attacker : MonoBehaviour
         {
             _attackerType=AttackerType.AI;
             _waypointSeeker.PlayerReached += SetAiAttacking;
-            _playerDetector.OnPlayerLost += SetAiNotAttacking;
+            _playerDetector.PlayerLost += SetAiNotAttacking;
         }
         else
         {
@@ -46,7 +46,7 @@ public class Attacker : MonoBehaviour
         if (_attackerType == AttackerType.AI)
         {
             _waypointSeeker.PlayerReached -= SetAiAttacking;
-            _playerDetector.OnPlayerLost -= SetAiNotAttacking;
+            _playerDetector.PlayerLost -= SetAiNotAttacking;
         }
     }
 
