@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum AttackerType
@@ -11,6 +12,7 @@ public class Attacker : MonoBehaviour
     [SerializeField] private float _damage = 20f;
     [SerializeField] private float _distance = 0.5f;
     [SerializeField] private float _height = 1f;
+    [SerializeField] private float _attackInterval = 1f;
 
     private bool _aiIsAttacking;
     private AttackerType _attackerType;
@@ -18,6 +20,8 @@ public class Attacker : MonoBehaviour
     private WaypointSeeker _waypointSeeker;
     private PlayerDetector _playerDetector;
     private Health _targetHealth;
+    private bool _canAttack = true;
+    private Coroutine _attackColdown;
 
     private void Awake()
     {
@@ -65,12 +69,16 @@ public class Attacker : MonoBehaviour
     {
         if ((_attackerType == AttackerType.Player && _inputDetector.Attack) || (_attackerType == AttackerType.AI && _aiIsAttacking))
         {
-            print(gameObject.name + "isAttacking");
-
-            if (CheckForTarget())
+            if (CheckForTarget() && _canAttack)
             {
                 _targetHealth.TakeDamage(_damage);
-                print(_targetHealth.gameObject + "Damaged");
+
+                if (_attackColdown != null) 
+                {
+                    StopCoroutine(_attackColdown);
+                }
+
+                _attackColdown = StartCoroutine(AttackColdown());
             }
         }
     }    
@@ -80,5 +88,16 @@ public class Attacker : MonoBehaviour
         RaycastHit hit;
 
         return (Physics.Raycast(transform.position + Vector3.up * _height, transform.forward, out hit, _distance) && hit.transform.TryGetComponent<Health>(out _targetHealth));
+    }
+
+    private IEnumerator AttackColdown()
+    {
+        _canAttack = false;
+
+        while (!_canAttack)
+        {
+            yield return new WaitForSeconds(_attackInterval);
+            _canAttack = true;
+        }        
     }
 }

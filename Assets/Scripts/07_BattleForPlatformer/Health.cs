@@ -1,12 +1,18 @@
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour
 {
+    public event Action HealthChanged;
+
     [SerializeField] private float _maxHealth = 100f;
 
     private ItemTaker _itemTaker;
     private float _minHealth = 0;
-    private float _health;
+    private float _healthValue;
+
+    public float HealthValue => _healthValue;
+    public float MaxHealth => _maxHealth;
 
     private void OnEnable()
     {
@@ -31,17 +37,19 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        _health = _maxHealth;
+        _healthValue = _maxHealth;
+        HealthChanged?.Invoke();
     }
 
     public void Heal(MedKit medKit)
     {
-        _health = Mathf.Min(_health + medKit.HealValue, _maxHealth);
-        print("Got heal");
+        _healthValue = Mathf.Min(_healthValue + medKit.HealValue, _maxHealth);
+        HealthChanged?.Invoke();     
     }
 
     public void TakeDamage(float  damage)
     {
-        _health = Mathf.Max(_health - damage, _minHealth);
+        _healthValue = Mathf.Max(_healthValue - damage, _minHealth);
+        HealthChanged?.Invoke();
     }
 }
