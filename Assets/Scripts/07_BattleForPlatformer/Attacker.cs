@@ -86,7 +86,7 @@ public class Attacker : MonoBehaviour
     private bool CheckForTarget()
     {
         RaycastHit hit;
-
+        
         return (Physics.Raycast(transform.position + Vector3.up * _height, transform.forward, out hit, _distance) && hit.transform.TryGetComponent<Health>(out _targetHealth));
     }
 

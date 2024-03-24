@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 4710746231495683589}
   - component: {fileID: 5249544202201601564}
   - component: {fileID: 7282277654580178304}
+  - component: {fileID: 360896227202383394}
+  - component: {fileID: 2387721260565231533}
+  - component: {fileID: 7132764769569097111}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -47,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17bf45e1cabfc864598951e4b2269b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 10
+  _distance: 5
   _detectionHeight: 1
 --- !u!114 &7282277654580178304
 MonoBehaviour:
@@ -61,10 +64,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2696eec5b689974281bc9db574f072a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _patrolSpeed: 0
-  _playerSeekSpeed: 0
-  _distanceThreshold: 0.1
+  _patrolSpeed: 1.5
+  _playerSeekSpeed: 3
+  _distanceThreshold: 0.8
   _waypointsBranch: {fileID: 0}
+--- !u!114 &360896227202383394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792838219364635604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 380975fc39e8933439ae8979af2cc0ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 20
+  _distance: 0.5
+  _height: 1
+  _attackInterval: 1
+--- !u!114 &2387721260565231533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792838219364635604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c4b451b7a131d4eab7c0af71a9d98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+--- !u!136 &7132764769569097111
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792838219364635604}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.32
+  m_Height: 1.2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!1 &4088032751855361872
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,7 +131,6 @@ GameObject:
   - component: {fileID: 6526964336370060650}
   - component: {fileID: 7982026196669522654}
   - component: {fileID: 8200838425613301783}
-  - component: {fileID: 7195766411301535322}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -149,29 +203,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7195766411301535322
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4088032751855361872}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4887704684987509275
 GameObject:
   m_ObjectHideFlags: 0
