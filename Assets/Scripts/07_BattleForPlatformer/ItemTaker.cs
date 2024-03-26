@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemTaker : MonoBehaviour
 {
     public event Action<Item> ItemTaken;
-    public event Action <MedKit> MedKitTaken;
+    public event Action <float> MedKitTaken;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +14,7 @@ public class ItemTaker : MonoBehaviour
 
             if (other.TryGetComponent(out MedKit medKit))
             {
-                MedKitTaken?.Invoke(medKit);
+                MedKitTaken?.Invoke(medKit.HealValue);
             }
         }
     }
