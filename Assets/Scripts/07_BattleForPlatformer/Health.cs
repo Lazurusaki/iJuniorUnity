@@ -41,9 +41,9 @@ public class Health : MonoBehaviour
         HealthChanged?.Invoke();
     }
 
-    public void Heal(float HealValue)
+    public void Heal(float healValue)
     {
-        _healthValue = Mathf.Min(_healthValue + HealValue, _maxHealth);
+        _healthValue = Mathf.Min(_healthValue + healValue, _maxHealth);
         HealthChanged?.Invoke();     
     }
 

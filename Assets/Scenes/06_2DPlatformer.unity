@@ -1986,9 +1986,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7c45600e18870a4995323c40131959a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _drainRate: 0.5
-  _distance: 2
+  _drainRate: 1.5
+  _distance: 4
   _duration: 6
+  _coldown: 10
 --- !u!1001 &8616596557215427313
 PrefabInstance:
   m_ObjectHideFlags: 0
