@@ -14,7 +14,6 @@ public class Vampiric : MonoBehaviour
     private Coroutine _drainCorutine;
     private Coroutine _coldownCorutine;
     private Health _health;
-    private Health _targetHealth;
     private float _halfMultiplier = 0.5f;
     private bool _isAvailable = true;
     
@@ -31,34 +30,41 @@ public class Vampiric : MonoBehaviour
 
     private void AbilityHandler()
     {
-        if (_isAvailable)
+        if (_inputDetector.Vampiric && _isAvailable)
         {
-            if (_inputDetector.Vampiric && CheckForTarget())
+            if (CheckForTarget(out Health targetHealth))
             {
-                if (_targetHealth.HealthValue > 0)
+                if (_coldownCorutine != null)
                 {
-                    if (_coldownCorutine != null)
-                    {
-                        StopCoroutine(_coldownCorutine);
-                    }
-
-                    if (_drainCorutine != null)
-                    {
-                        StopCoroutine(_drainCorutine);
-                    }
-
-                    _isAvailable = false;
-                    _coldownCorutine = StartCoroutine(Coldown());
-                    _drainCorutine = StartCoroutine(Drain());
+                    StopCoroutine(_coldownCorutine);
                 }
+
+                if (_drainCorutine != null)
+                {
+                    StopCoroutine(_drainCorutine);
+                }
+
+                _isAvailable = false;
+                _coldownCorutine = StartCoroutine(Coldown());
+                _drainCorutine = StartCoroutine(Drain());
             }
         }
     }
 
-    private bool CheckForTarget()
+    private bool CheckForTarget(out Health targetHealth)
     {
+        targetHealth = null;
         Vector3 originPosition = transform.position + Vector3.up * (GetComponent<CapsuleCollider>().height * _halfMultiplier);
-        return (Physics.Raycast(originPosition, transform.forward, out RaycastHit hit, _distance) && hit.transform.TryGetComponent<Health>(out _targetHealth));
+        
+        if (Physics.Raycast(originPosition, transform.forward, out RaycastHit hit, _distance))
+        {
+            if (hit.transform.TryGetComponent<Health>(out targetHealth))
+            {
+                return (targetHealth.HealthValue > _drainRate);
+            }
+        }
+
+        return false;
     }
 
     private IEnumerator Drain()
@@ -67,9 +73,9 @@ public class Vampiric : MonoBehaviour
         float drainPeriod = 0.1f;
         WaitForSeconds wait = new WaitForSeconds(drainPeriod); 
 
-        while (timer > 0 && CheckForTarget())
+        while (timer > 0 && CheckForTarget(out Health targetHealth))
         {
-            _targetHealth.TakeDamage(_drainRate);
+            targetHealth.TakeDamage(_drainRate);
             _health.Heal(_drainRate);
             yield return wait;
             timer -= drainPeriod;
